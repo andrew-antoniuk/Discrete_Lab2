@@ -63,7 +63,9 @@ def iterative_adjacency_matrix_dfs(graph: list[list[int]], start: int) -> list[i
     pass
 
 
-def recursive_adjacency_dict_dfs(graph: dict[int, list[int]], start: int) -> list[int]:
+def recursive_adjacency_dict_dfs(graph: dict[int, list[int]],
+                                 start: int,
+                                 path = None) -> list[int]:
 
     """
     :param dict[int, list[int]] graph: the adjacency list of a given graph
@@ -75,7 +77,16 @@ def recursive_adjacency_dict_dfs(graph: dict[int, list[int]], start: int) -> lis
     [0, 1, 2, 3]
     """
 
-    pass
+    if path is None:
+        path = []
+
+    path.append(start)
+
+    for vert in graph[start]:
+        if vert not in path:
+            recursive_adjacency_dict_dfs(graph, vert, path)
+
+    return path
 
 
 def recursive_adjacency_matrix_dfs(graph: list[list[int]], start: int) -> list[int]:
@@ -105,6 +116,7 @@ def iterative_adjacency_dict_bfs(graph: dict[int, list[int]], start: int) -> lis
     [0, 1, 2, 3]
 
     """
+
     pass
 
 
@@ -121,7 +133,6 @@ def iterative_adjacency_matrix_bfs(graph: list[list[int]], start: int) -> list[i
     """
 
     pass
-
 
 
 def adjacency_matrix_radius(graph: list[list[int]]) -> int:
