@@ -2,35 +2,102 @@
 Lab 2 by Taras Konoval & Antoniuk Andrii
 """
 
-
 def read_incidence_matrix(filename: str) -> list[list[int]]:
-
     """
     :param str filename: path to file
     :returns list[list[int]]: the incidence matrix of a given graph
     """
+    edges = []
 
-    pass
+    with open(filename, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+
+            if "->" in line:
+                left, right = line.split("->")
+                u = int(left.strip())
+                v = int(right.strip().strip(";"))
+                edges.append((u, v))
+
+    max_vertex = 0
+    for u, v in edges:
+        max_vertex = max(max_vertex, u, v)
+
+    n = max_vertex + 1
+    m = len(edges)
+
+    matrix = [[0 for _ in range(m)] for _ in range(n)]
+
+    for j, (u, v) in enumerate(edges):
+        if u == v:
+            matrix[u][j] = 2
+        else:
+            matrix[u][j] = 1
+            matrix[v][j] = -1
+
+    return matrix
 
 
 def read_adjacency_matrix(filename: str) -> list[list[int]]:
-
     """
     :param str filename: path to file
-    :returns list[list[int]]: the adjacency matrix of a given graph
+    :returns list[list[int]]: the adjacency matrix of a given oriented graph
     """
+    edges = []
 
-    pass
+    with open(filename, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+
+            if "->" in line:
+                left, right = line.split("->")
+                u = int(left.strip())
+                v = int(right.strip().strip(";"))
+                edges.append((u, v))
+
+    max_vertex = 0
+    for u, v in edges:
+        max_vertex = max(max_vertex, u, v)
+
+    n = max_vertex + 1
+
+    matrix = [[0 for _ in range(n)] for _ in range(n)]
+
+    for u, v in edges:
+        matrix[u][v] = 1
+
+    return matrix
 
 
 def read_adjacency_dict(filename: str) -> dict[int, list[int]]:
-
     """
     :param str filename: path to file
-    :returns dict[int, list[int]]: the adjacency dict of a given graph
+    :returns dict[int, list[int]]: the adjacency dict of a given oriented graph
     """
+    edges = []
 
-    pass
+    with open(filename, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+
+            if "->" in line:
+                left, right = line.split("->")
+                u = int(left.strip())
+                v = int(right.strip().strip(";"))
+                edges.append((u, v))
+
+    max_vertex = 0
+    for u, v in edges:
+        max_vertex = max(max_vertex, u, v)
+
+    n = max_vertex + 1
+
+    graph = {i: [] for i in range(n)}
+
+    for u, v in edges:
+        graph[u].append(v)
+
+    return graph
 
 
 def iterative_adjacency_dict_dfs(graph: dict[int, list[int]], start: int) -> list[int]:
