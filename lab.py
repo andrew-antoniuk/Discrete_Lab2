@@ -297,6 +297,129 @@ def adjacency_dict_radius(graph: dict[int, list[int]]) -> int:
 
     pass
 
+def dfs_find_cycles(graph, start, v, path, on_path, cycles):
+    """
+    Depth-first search helper for detecting all simple directed cycles
+    that start at vertex `start` in an oriented graph.
+
+    :param graph: Oriented adjacency list of the graph
+    :param start: Starting vertex of the cycle search. Each cycle must begin and end here.
+    :param v: Current vertex in the DFS traversal.
+    :param path: Ordered list representing the current DFS path.
+    :param on_path: Set of vertices currently in the DFS path (to prevent repetitions).
+    :param cycles: List to which detected cycles are appended.
+
+    >>> graph = {0: [1], 1: [0]}
+    >>> cycles = []
+    >>> dfs_find_cycles(graph, start=0, v=0, path=[0], on_path={0}, cycles=cycles)
+    >>> cycles
+    [[0, 1]]
+
+    >>> graph = {0: [1], 1: [2], 2: [0]}
+    >>> cycles = []
+    >>> dfs_find_cycles(graph, start=0, v=0, path=[0], on_path={0}, cycles=cycles)
+    >>> cycles
+    [[0, 1, 2]]
+
+    >>> graph = {0: [1, 2], 1: [2, 0], 2: [0, 1]}
+    >>> cycles = []
+    >>> dfs_find_cycles(graph, start=0, v=0, path=[0], on_path={0}, cycles=cycles)
+    >>> sorted(cycles)
+    [[0, 1], [0, 1, 2], [0, 2], [0, 2, 1]]
+    """
+
+    for neighbor in graph[v]:
+        if neighbor == start:
+
+            if len(path) > 0:
+                cycles.append(path.copy())
+
+        elif neighbor not in on_path and neighbor >= start:
+            on_path.add(neighbor)
+            path.append(neighbor)
+
+            dfs_find_cycles(graph, start, neighbor, path, on_path, cycles)
+
+            path.pop()
+            on_path.remove(neighbor)
+
+
+def adjacency_dict_cycles(graph: dict[int, list[int]]) -> list[list[int]]:
+    """
+    :param dict[int, list[int]] graph: adjacency list of a directed graph
+    :returns list[list[int]]: all unique simple cycles in the graph
+
+    >>> adjacency_dict_cycles({0: [1], 1: [0]})
+    [[0, 1]]
+
+    >>> adjacency_dict_cycles({0: [1], 1: [2], 2: [0]})
+    [[0, 1, 2]]
+
+    >>> adjacency_dict_cycles({0: [1, 2], 1: [0, 2], 2: [0, 1]})
+    [[0, 1], [0, 1, 2], [0, 2], [0, 2, 1], [1, 2]]
+    """
+    cycles = []
+    vertices = sorted(graph.keys())
+
+    for start in vertices:
+        dfs_find_cycles(
+            graph=graph,
+            start=start,
+            v=start,
+            path=[start],
+            on_path={start},
+            cycles=cycles
+        )
+
+    unique_cycles = []
+    seen = set()
+
+    for cycle in cycles:
+        m = min(cycle)
+        idx = cycle.index(m)
+        rotated = cycle[idx:] + cycle[:idx]
+        key = tuple(rotated)
+
+        if key not in seen:
+            seen.add(key)
+            unique_cycles.append(rotated)
+
+    return unique_cycles
+
+def adjacency_matrix_cycles(graph: list[list[int]]) -> list[list[int]]:
+    """
+    :param list[list[int]] graph: adjacency matrix of a directed graph
+    :returns list[list[int]]: all unique simple cycles in the graph
+
+    >>> adjacency_matrix_cycles([
+    ...     [0,1],
+    ...     [1,0]
+    ... ])
+    [[0, 1]]
+
+    >>> adjacency_matrix_cycles([
+    ...     [0,1,0],
+    ...     [0,0,1],
+    ...     [1,0,0]
+    ... ])
+    [[0, 1, 2]]
+
+    >>> adjacency_matrix_cycles([
+    ...     [0,1,1],
+    ...     [1,0,1],
+    ...     [1,1,0]
+    ... ])
+    [[0, 1], [0, 1, 2], [0, 2], [0, 2, 1], [1, 2]]
+    """
+    n = len(graph)
+    adj = {i: [] for i in range(n)}
+
+    for i in range(n):
+        for j in range(n):
+            if graph[i][j] == 1:
+                adj[i].append(j)
+
+    return adjacency_dict_cycles(adj)
 
 if __name__ == "__main__":
     import doctest
