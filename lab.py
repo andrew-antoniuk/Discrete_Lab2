@@ -111,8 +111,22 @@ def iterative_adjacency_dict_dfs(graph: dict[int, list[int]], start: int) -> lis
     >>> iterative_adjacency_dict_dfs({0: [1, 2], 1: [0, 2, 3], 2: [0, 1], 3: []}, 0)
     [0, 1, 2, 3]
     """
+    visited = set()
+    stack = [start]
+    order = []
 
-    pass
+    while stack:
+        v = stack.pop()
+
+        if v not in visited:
+            visited.add(v)
+            order.append(v)
+
+            for neighbor in reversed(graph[v]):
+                if neighbor not in visited:
+                    stack.append(neighbor)
+
+    return order
 
 
 def iterative_adjacency_matrix_dfs(graph: list[list[int]], start: int) -> list[int]:
@@ -126,8 +140,24 @@ def iterative_adjacency_matrix_dfs(graph: list[list[int]], start: int) -> list[i
     >>> iterative_adjacency_matrix_dfs([[0, 1, 1, 0], [1, 0, 1, 1], [1, 1, 0, 0], [0, 0, 0, 0]], 0)
     [0, 1, 2, 3]
     """
+    visited = set()
+    stack = [start]
+    order = []
 
-    pass
+    n = len(graph)
+
+    while stack:
+        v = stack.pop()
+
+        if v not in visited:
+            visited.add(v)
+            order.append(v)
+
+            for neighbor in range(n - 1, -1, -1):
+                if graph[v][neighbor] == 1 and neighbor not in visited:
+                    stack.append(neighbor)
+
+    return order
 
 
 def recursive_adjacency_dict_dfs(graph: dict[int, list[int]],
@@ -183,8 +213,22 @@ def iterative_adjacency_dict_bfs(graph: dict[int, list[int]], start: int) -> lis
     [0, 1, 2, 3]
 
     """
+    visited = set()
+    queue = [start]
+    order = []
 
-    pass
+    visited.add(start)
+
+    while queue:
+        v = queue.pop(0)
+        order.append(v)
+
+        for neighbor in graph[v]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append(neighbor)
+
+    return order
 
 
 def iterative_adjacency_matrix_bfs(graph: list[list[int]], start: int) -> list[int]:
@@ -198,8 +242,23 @@ def iterative_adjacency_matrix_bfs(graph: list[list[int]], start: int) -> list[i
     >>> iterative_adjacency_matrix_bfs([[0, 1, 1, 0], [1, 0, 1, 1], [1, 1, 0, 0], [0, 0, 0, 0]], 0)
     [0, 1, 2, 3]
     """
+    visited = set()
+    queue = [start]
+    order = []
 
-    pass
+    visited.add(start)
+    n = len(graph)
+
+    while queue:
+        v = queue.pop(0)
+        order.append(v)
+
+        for neighbor in range(n):
+            if graph[v][neighbor] == 1 and neighbor not in visited:
+                visited.add(neighbor)
+                queue.append(neighbor)
+
+    return order
 
 
 def adjacency_matrix_radius(graph: list[list[int]]) -> int:
