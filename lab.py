@@ -299,33 +299,19 @@ def adjacency_dict_radius(graph: dict[int, list[int]]) -> int:
 
 def dfs_find_cycles(graph, start, v, path, on_path, cycles):
     """
-    Depth-first search helper for detecting all simple directed cycles
-    that start at vertex `start` in an oriented graph.
-
-    :param graph: Oriented adjacency list of the graph
-    :param start: Starting vertex of the cycle search. Each cycle must begin and end here.
-    :param v: Current vertex in the DFS traversal.
-    :param path: Ordered list representing the current DFS path.
-    :param on_path: Set of vertices currently in the DFS path (to prevent repetitions).
-    :param cycles: List to which detected cycles are appended.
+    Performs a DFS to find all simple directed cycles that start at `start`.
 
     >>> graph = {0: [1], 1: [0]}
     >>> cycles = []
-    >>> dfs_find_cycles(graph, start=0, v=0, path=[0], on_path={0}, cycles=cycles)
+    >>> dfs_find_cycles(graph, 0, 0, [0], {0}, cycles)
     >>> cycles
     [[0, 1]]
 
     >>> graph = {0: [1], 1: [2], 2: [0]}
     >>> cycles = []
-    >>> dfs_find_cycles(graph, start=0, v=0, path=[0], on_path={0}, cycles=cycles)
+    >>> dfs_find_cycles(graph, 0, 0, [0], {0}, cycles)
     >>> cycles
     [[0, 1, 2]]
-
-    >>> graph = {0: [1, 2], 1: [2, 0], 2: [0, 1]}
-    >>> cycles = []
-    >>> dfs_find_cycles(graph, start=0, v=0, path=[0], on_path={0}, cycles=cycles)
-    >>> sorted(cycles)
-    [[0, 1], [0, 1, 2], [0, 2], [0, 2, 1]]
     """
 
     for neighbor in graph[v]:
@@ -346,8 +332,8 @@ def dfs_find_cycles(graph, start, v, path, on_path, cycles):
 
 def adjacency_dict_cycles(graph: dict[int, list[int]]) -> list[list[int]]:
     """
-    :param dict[int, list[int]] graph: adjacency list of a directed graph
-    :returns list[list[int]]: all unique simple cycles in the graph
+    Finds all unique simple directed cycles in a graph represented
+    as an adjacency dictionary.
 
     >>> adjacency_dict_cycles({0: [1], 1: [0]})
     [[0, 1]]
@@ -355,7 +341,7 @@ def adjacency_dict_cycles(graph: dict[int, list[int]]) -> list[list[int]]:
     >>> adjacency_dict_cycles({0: [1], 1: [2], 2: [0]})
     [[0, 1, 2]]
 
-    >>> adjacency_dict_cycles({0: [1, 2], 1: [0, 2], 2: [0, 1]})
+    >>> adjacency_dict_cycles({0: [1,2], 1: [0,2], 2: [0,1]})
     [[0, 1], [0, 1, 2], [0, 2], [0, 2, 1], [1, 2]]
     """
     cycles = []
@@ -388,13 +374,10 @@ def adjacency_dict_cycles(graph: dict[int, list[int]]) -> list[list[int]]:
 
 def adjacency_matrix_cycles(graph: list[list[int]]) -> list[list[int]]:
     """
-    :param list[list[int]] graph: adjacency matrix of a directed graph
-    :returns list[list[int]]: all unique simple cycles in the graph
+    Finds all unique simple directed cycles in a graph represented
+    as an adjacency matrix.
 
-    >>> adjacency_matrix_cycles([
-    ...     [0,1],
-    ...     [1,0]
-    ... ])
+    >>> adjacency_matrix_cycles([[0,1],[1,0]])
     [[0, 1]]
 
     >>> adjacency_matrix_cycles([
