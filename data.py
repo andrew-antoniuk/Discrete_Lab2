@@ -15,14 +15,14 @@ def measure(read_fn1, f1, read_fn2, f2, files: list):
     for f in files:
         data = read_fn1(f)
         start = time.time()
-        # f1(data)
-        f1(data, 0)
+        f1(data)
+        # f1(data, 0)
         times1.append(time.time() - start)
     for f in files:
         data = read_fn2(f)
         start = time.time()
-        # f2(data)
-        f2(data, 0)
+        f2(data)
+        # f2(data, 0)
         times2.append(time.time() - start)
 
     plt.plot(files, times1, marker = "o", label = "iterative_adjacency_dict_dfs")
@@ -34,15 +34,15 @@ def measure(read_fn1, f1, read_fn2, f2, files: list):
     plt.legend()
     plt.show()
 
-d = ["g1.dot", "g2.dot", "g3.dot", "g4.dot", "g5.dot"]
+d = ["g1.dot", "g2.dot", "g3.dot", "g4.dot", "g5.dot", "g6.dot", "g7.dot"]
 
-measure(
-    lab.read_adjacency_dict,
-    lab.iterative_adjacency_dict_dfs,
-    lab.read_adjacency_matrix,
-    lab.iterative_adjacency_matrix_dfs,
-    d
-)
+# measure(
+#     lab.read_adjacency_dict,
+#     lab.iterative_adjacency_dict_dfs,
+#     lab.read_adjacency_matrix,
+#     lab.iterative_adjacency_matrix_dfs,
+#     d
+# )
 
 # measure(
 #     lab.read_adjacency_dict,

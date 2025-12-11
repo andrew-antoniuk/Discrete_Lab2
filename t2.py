@@ -42,47 +42,96 @@ def adjacency_matrix_radius(graph: list[list[int]]) -> int:
     return min(eccentricities)
 
 
-def eccentricity_dict(graph: dict[list[list[int]]], start: int) -> int:
+# def eccentricity_dict(graph: dict[list[list[int]]], start: int) -> int:
 
-    """
-    Searches for the eccentricity of the vertex
-    in the graph represented as dictionary
-    by BFS-method
-    """
+#     """
+#     Searches for the eccentricity of the vertex
+#     in the graph represented as dictionary
+#     by BFS-method
+#     """
 
-    stack = [(start, 0)]
-    visited = {start}
-    max_dis = 0
+#     stack = [(start, 0)]
+#     visited = {start}
+#     max_dis = 0
 
-    while stack:
-        node_cur, dis_cur = stack.pop(0)
-        max_dis = max(max_dis, dis_cur)
+#     while stack:
+#         node_cur, dis_cur = stack.pop(0)
+#         max_dis = max(max_dis, dis_cur)
 
-        if node_cur in graph:
-            for node in graph[node_cur]:
-                if node not in visited:
-                    dis_new = dis_cur + 1
-                    visited.add(node)
-                    stack.append((node, dis_new))
+#         if node_cur in graph:
+#             for node in graph[node_cur]:
+#                 if node not in visited:
+#                     dis_new = dis_cur + 1
+#                     visited.add(node)
+#                     stack.append((node, dis_new))
 
-    return max_dis
-
-
-def adjacency_dict_radius(graph: dict[int, list[int]]) -> int:
-
-    """
-    :param dict[int, list[int]] graph: the adjacency list of a given graph
-    :returns int: the radius of the graph
-    >>> adjacency_dict_radius({0: [1, 2], 1: [0, 2], 2: [0, 1]})
-    1
-    >>> adjacency_dict_radius({0: [1, 2], 1: [0, 2, 3], 2: [0, 1], 3: [1]})
-    1
-    """
-
-    eccentricities = {eccentricity_dict(graph, vert) for vert in graph}
-    return min(eccentricities)
+#     return max_dis
 
 
+# def adjacency_dict_radius(graph: dict[int, list[int]]) -> int:
+
+#     """
+#     :param dict[int, list[int]] graph: the adjacency list of a given graph
+#     :returns int: the radius of the graph
+#     >>> adjacency_dict_radius({0: [1, 2], 1: [0, 2], 2: [0, 1]})
+#     1
+#     >>> adjacency_dict_radius({0: [1, 2], 1: [0, 2, 3], 2: [0, 1], 3: [1]})
+#     1
+#     """
+
+#     eccentricities = {eccentricity_dict(graph, vert) for vert in graph}
+#     return min(eccentricities)
+
+
+
+# def recursive_adjacency_dict_dfs(graph: dict[int, list[int]],
+#                                  start: int,
+#                                  visited = None) -> list[int]:
+
+#     """
+#     :param dict[int, list[int]] graph: the adjacency list of a given graph
+#     :param int start: start vertex of search
+#     :returns list[int]: the dfs traversal of the graph
+#     >>> recursive_adjacency_dict_dfs({0: [1, 2], 1: [0, 2], 2: [0, 1]}, 0)
+#     [0, 1, 2]
+#     >>> recursive_adjacency_dict_dfs({0: [1, 2], 1: [0, 2, 3], 2: [0, 1], 3: []}, 0)
+#     [0, 1, 2, 3]
+#     """
+
+#     if visited is None:
+#         visited = []
+
+#     visited.append(start)
+
+#     for vert in graph[start]:
+#         if vert not in visited:
+#             recursive_adjacency_dict_dfs(graph, vert, visited)
+
+#     return visited
+
+
+# def recursive_adjacency_matrix_dfs(graph: list[list[int]], start: int, visited = None) -> list[int]:
+
+#     """
+#     :param list[list[int]] graph: the adjacency matrix of a given graph
+#     :param int start: start vertex of search
+#     :returns list[int]: the dfs traversal of the graph
+#     >>> recursive_adjacency_matrix_dfs([[0, 1, 1], [1, 0, 1], [1, 1, 0]], 0)
+#     [0, 1, 2]
+#     >>> recursive_adjacency_matrix_dfs([[0, 1, 1, 0], [1, 0, 1, 1], [1, 1, 0, 0], [0, 0, 0, 0]], 0)
+#     [0, 1, 2, 3]
+#     """
+
+#     if visited is None:
+#         visited = []
+
+#     visited.append(start)
+
+#     for index, val in enumerate(graph[start]):
+#         if val == 1 and index not in visited:
+#             recursive_adjacency_matrix_dfs(graph, index, visited)
+
+#     return visited
 
 g = {
     'A': ['B', 'C', 'D'], #0
@@ -126,12 +175,12 @@ g_inc = [
 ]
 
 h = {
-    'A': ['B', 'C', 'D'], #0
-    'B': ['A', 'C', 'E', 'J'], #1
-    'C': ['A', 'B', 'E', 'D', 'J'], #1
-    'D': ['A', 'C'], #1
-    'E': ['B', 'C'], #2
-    'J': ['B', 'C'] #2
+    'A': ['B', 'C', 'D'],
+    'B': ['A', 'C', 'E', 'J'],
+    'C': ['A', 'B', 'E', 'D', 'J'],
+    'D': ['A', 'C'],
+    'E': ['B', 'C'],
+    'J': ['B', 'C']
 }
 
 h_adj = [
@@ -154,16 +203,8 @@ h_inc = [
     [0, 0, 0, 0, 1, 0, 0, 1]  # J
 ]
 
-# print(eccentricity_matrix_adj(g_adj, 0))
-# print(eccentricity_matrix_adj(g_adj, 1))
-# print(eccentricity_matrix_adj(g_adj, 2))
-# print(eccentricity_matrix_adj(g_adj, 3))
-# print(eccentricity_matrix_adj(g_adj, 4))
-# print(eccentricity_matrix_adj(g_adj, 5))
-# print(eccentricity_matrix_adj(g_adj, 6))
-# print(eccentricity_matrix_adj(g_adj, 7))
-# print(eccentricity_matrix_adj(g_adj, 8))
-# print(eccentricity_matrix_adj(g_adj, 9))
+# print(recursive_adjacency_matrix_dfs(h_adj, 1))
+# print(recursive_adjacency_dict_dfs(h, 'B'))
 # print(bfs_eccentricity_dict(g, "A"))
 # print(eccentricity_dict(h, "A"))
 # print(bfs_dict(g, "A"))

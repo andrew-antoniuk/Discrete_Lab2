@@ -337,7 +337,7 @@ def adjacency_matrix_radius(graph: list[list[int]]) -> int:
     1
     """
 
-    eccentricities = {eccentricity_matrix_adj(graph, vert) for vert, _ in enumerate(graph)}
+    eccentricities = (eccentricity_matrix_adj(graph, vert) for vert, _ in enumerate(graph))
     return min(eccentricities)
 
 
@@ -382,7 +382,7 @@ def adjacency_dict_radius(graph: dict[int, list[int]]) -> int:
     1
     """
 
-    eccentricities = {eccentricity_dict(graph, vert) for vert in graph}
+    eccentricities = (eccentricity_dict(graph, vert) for vert in graph)
     return min(eccentricities)
 
 
