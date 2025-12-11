@@ -25,16 +25,16 @@ def measure(read_fn1, f1, read_fn2, f2, files: list):
         # f2(data, 0)
         times2.append(time.time() - start)
 
-    plt.plot(files, times1, marker = "o", label = "iterative_adjacency_dict_dfs")
-    plt.plot(files, times2, marker = "o", label = "iterative_adjacency_matrix_dfs")
-    plt.title("Comparing")
-    plt.xlabel("Graph files (50-170 nodes)")
+    plt.plot(files, times1, marker = "o", label = "adjacency_dict_cycles") # Change Name of the Func
+    plt.plot(files, times2, marker = "o", label = "adjacency_matrix_cycles") # Change Name of the Func
+    plt.title("Comparing time execution for different data sizes")
+    plt.xlabel(".dot files (name for number of nodes)")
     plt.ylabel("Execution time (s)")
     plt.grid(True)
     plt.legend()
     plt.show()
 
-d = ["g1.dot", "g2.dot", "g3.dot", "g4.dot", "g5.dot", "g6.dot", "g7.dot"]
+d = ["50.dot", "80.dot", "110.dot", "140.dot", "170.dot", "200.dot", "230.dot"]
 
 # measure(
 #     lab.read_adjacency_dict,
